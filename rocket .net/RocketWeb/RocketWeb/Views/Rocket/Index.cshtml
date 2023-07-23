@@ -1,0 +1,103 @@
+﻿@model RocketWeb.Models.Rocket
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div>
+    <h4>Rocket</h4>
+    <hr />
+    <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <dl class="row">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Id)
+                </dt>
+                <dd id="displayId" class="col-sm-10">
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd id="displayName" class="col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd id="displayDescription"  class="col-sm-10">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="row">
+                <div class="">
+                    <form id="form">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Id" class="control-label"></label>
+                            <input asp-for="Id" class="form-control" />
+                            <span asp-validation-for="Id" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input id="btnSave" value="Save" class="btn btn-primary" />
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#btnSave").click(function () {
+            const formDataArray = $("#form").serializeArray();
+            let request = {};
+            formDataArray.forEach(function (input) {
+                request[input.name] = input.value;
+            });
+
+            const apiUrl = "/api/Rocket";
+             
+            $.ajax({
+                url: apiUrl,
+                type: "POST",
+                data: JSON.stringify(request),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#displayId").text(data.id);
+                    $("#displayName").text(data.name);
+                    $("#displayDescription").text(data.description);
+                },
+                error: function () {                     
+                }
+            });
+        });
+    });
+</script>
